@@ -56,8 +56,8 @@ UserSchema.method('generateToken', function () {
     { expiresIn: '1h' });
 });
 
-UserSchema.method('passwordMatch', function (suppliedPassword: string) {
-  return bcrypt.compare(suppliedPassword, this.password);
+UserSchema.method('passwordMatch', async function (suppliedPassword: string) {
+  return await bcrypt.compare(suppliedPassword, this.password);
 });
 
 UserSchema.pre('save', async function (next) {

@@ -28,7 +28,8 @@ const login = async (req: Request, res: Response) => {
   if (!user) {
     throw new UnauthenticatedError('Email not registered, kindly sign up');
   }
-  const passwordMatch = user.passwordMatch(password);
+  const passwordMatch = await user.passwordMatch(password);
+  console.log('password match: ', passwordMatch)
   if (!passwordMatch) {
     throw new UnauthenticatedError('No account found for that combination of email and password');
   }

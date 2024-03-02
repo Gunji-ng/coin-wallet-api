@@ -2,6 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 
 export function errorHandlerMiddleware(err: any, req: Request, res: Response, next: NextFunction) {
+  let customError = {
+    statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
+    message: err.message || 'Something went wrong try again later',
+  }
 
   if (err.name === 'ValidationError') {
     let errorMessages = [];
@@ -13,7 +17,14 @@ export function errorHandlerMiddleware(err: any, req: Request, res: Response, ne
     if (errorMessages.length === 1) {
       errorMessages = errorMessages[0];
     }
-    return res.status(StatusCodes.BAD_REQUEST).json({ message: errorMessages });
+    customError.statusCode = StatusCodes.BAD_REQUEST;
+    customError.message = errorMessages;
   }
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ err });
+
+  if (err.code === 11000 && err.keyPattern.email) {
+    customError.statusCode = StatusCodes.CONFLICT;
+    customError.message = 'email address registered already';
+  }
+
+  return res.status(customError.statusCode).json({ message: customError.message })
 };
