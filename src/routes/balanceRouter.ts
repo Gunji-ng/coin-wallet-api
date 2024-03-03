@@ -3,4 +3,4 @@ import { getBalance } from "../controllers/balanceController";
 
 const authRouter = Router();
 
-export default authRouter.get('/balance', getBalance);
+export default authRouter.get('/', getBalance);

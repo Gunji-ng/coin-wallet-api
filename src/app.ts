@@ -7,6 +7,7 @@ import { errorHandlerMiddleware } from "./middleware/errorHandlerMiddleware";
 import { authMiddleware } from "./middleware/authenticationMiddleware";
 import authRouter from "./routes/authRouter";
 import balanceRouter from "./routes/balanceRouter";
+import transactionRouter from "./routes/transactionRouter";
 
 dotenv.config();
 
@@ -24,7 +25,9 @@ app.use('/api/v1', authRouter);
 
 app.use(authMiddleware);
 
-app.use('/api/v1', balanceRouter);
+app.use('/api/v1/balance', balanceRouter);
+
+app.use('/api/v1/transactions', transactionRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

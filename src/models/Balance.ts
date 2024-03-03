@@ -1,9 +1,9 @@
 import { Model, Schema, model, Types } from "mongoose";
 
 interface IBalance {
-  User: Types.ObjectId;
-  DPP_coins: number;
-  KDJ_coins: number;
+  userId: Types.ObjectId;
+  dppCoins: number;
+  kdjCoins: number;
 };
 
 interface IBalanceMethods {
@@ -18,17 +18,17 @@ type BalanceModel = Model<IBalance, {}, IBalanceMethods>;
 
 const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
   {
-    DPP_coins: {
+    dppCoins: {
       type: Number,
       required: true,
       default: 0
     },
-    KDJ_coins: {
+    kdjCoins: {
       type: Number,
       required: true,
       default: 0
     },
-    User: {
+    userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Please provide user']
@@ -39,9 +39,9 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
 
 /**
  * This is a one-way conversion only.
- * i.e. conversion can only be from DPP_coins to KDJ_coins.
- * You can't convert KDJ_coins to DPP_coins.
- * DPP_coins can only be earned from DPP_Admin.
+ * i.e. conversion can only be from dppCoins to kdjCoins.
+ * You can't convert kdjCoins to dppCoins.
+ * dppCoins can only be earned from DPP_Admin.
  */
 BalanceSchema.method('convertCoins', async function (amount: number) {
   return

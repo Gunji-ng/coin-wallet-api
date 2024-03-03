@@ -8,7 +8,7 @@ const register = async (req: Request, res: Response) => {
   const user = await User.create({ ...req.body });
   const data = JSON.parse(JSON.stringify(user, null, 2));
   data['token'] = user.generateToken();
-  await Balance.create({ User: data._id });
+  await Balance.create({ userId: data._id });
 
   delete data['password'];
   delete data['roles'];
