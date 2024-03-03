@@ -1,11 +1,11 @@
 import "express-async-errors";
 import express, { Application } from "express";
-import { authMiddleware } from "./middleware/authenticationMiddleware";
+import * as dotenv from 'dotenv';
+import connectToMongoDB from "./db/connectToMongoDB";
 import { notFoundMiddleware } from "./middleware/notFoundMiddleware";
 import { errorHandlerMiddleware } from "./middleware/errorHandlerMiddleware";
+import { authMiddleware } from "./middleware/authenticationMiddleware";
 import authRouter from "./routes/authRouter";
-import connectToMongoDB from "./db/connectToMongoDB";
-import * as dotenv from 'dotenv';
 
 dotenv.config();
 

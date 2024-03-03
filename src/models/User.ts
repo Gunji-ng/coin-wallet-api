@@ -8,7 +8,6 @@ interface IUser {
   email: string;
   password: string;
   roles: number[];
-  balances: object;
 };
 
 interface IUserMethods {
@@ -41,10 +40,6 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     roles: {
       type: [Number],
       default: [appRoles.User]
-    },
-    balances: {
-      DPP_coins: { type: Number, required: true, default: 0 },
-      KDJ_coins: { type: Number, required: true, default: 0 }
     }
   },
   { timestamps: true }

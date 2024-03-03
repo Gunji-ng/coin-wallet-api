@@ -1,11 +1,13 @@
-import { BadRequestError, UnauthenticatedError } from "../errors";
-import { StatusCodes } from "http-status-codes";
-import User from '../models/User'
 import { NextFunction, Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import { BadRequestError, UnauthenticatedError } from "../errors";
+import User from '../models/User';
+import Balance from "../models/Balance";
 
 const register = async (req: Request, res: Response) => {
   const user = await User.create({ ...req.body });
   const data = JSON.parse(JSON.stringify(user, null, 2));
+  const balance = await Balance.create({ User: data._id });
   delete data['password'];
   data['token'] = user.generateToken();
 

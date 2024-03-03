@@ -1,6 +1,6 @@
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { UnauthenticatedError } from '../errors';
-import { NextFunction, Request, Response } from 'express';
 
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
