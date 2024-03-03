@@ -35,6 +35,7 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
     },
     password: {
       type: String,
+      select: false,
       required: [true, 'Please provide password']
     },
     roles: {

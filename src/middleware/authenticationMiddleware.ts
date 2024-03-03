@@ -10,6 +10,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   if (!authorization.startsWith('Bearer ')) {
     throw new UnauthenticatedError('Authorization format should be [Bearer <token>]');
   };
+
   const token = authorization.split(' ')[1];
   try {
     const decodedPayload = jwt.verify(token, process.env.APP_KEY as string) as jwt.JwtPayload;
