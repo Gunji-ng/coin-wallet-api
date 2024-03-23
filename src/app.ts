@@ -8,6 +8,7 @@ import { authMiddleware } from "./middleware/authenticationMiddleware";
 import authRouter from "./routes/authRouter";
 import balanceRouter from "./routes/balanceRouter";
 import transactionRouter from "./routes/transactionRouter";
+import profileRouter from "./routes/profileRouter";
 
 dotenv.config();
 
@@ -24,6 +25,8 @@ app.get('/', (req, res) => {
 app.use('/api/v1', authRouter);
 
 app.use(authMiddleware);
+
+app.use('/api/v1/profile', profileRouter);
 
 app.use('/api/v1/balance', balanceRouter);
 
