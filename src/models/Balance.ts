@@ -21,12 +21,24 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
     dppCoins: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
+      validate: {
+        validator: (value: number): boolean => {
+          return value > 0;
+        },
+        message: 'Balance cannot be less than 0'
+      }
     },
     kdjCoins: {
       type: Number,
       required: true,
-      default: 0
+      default: 0,
+      validate: {
+        validator: (value: number): boolean => {
+          return value > 0;
+        },
+        message: 'Balance cannot be less than 0'
+      }
     },
     userId: {
       type: Schema.Types.ObjectId,
