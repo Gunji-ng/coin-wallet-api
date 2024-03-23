@@ -6,7 +6,7 @@ import Transaction from "../models/Transaction";
 import Balance from "../models/Balance";
 
 
-
+// TODO: give access to only DPP Admin
 const allocateDppCoins = async (req: Request, res: Response) => {
   const { amount } = req.body;
 
@@ -14,13 +14,17 @@ const allocateDppCoins = async (req: Request, res: Response) => {
     throw new BadRequestError('Please provide recipient');
   };
 
-  if (amount <= 0 || !(typeof amount === 'number')) {
-    throw new BadRequestError('Please provide a valid amount');
-  }
-
   if (!amount) {
     throw new BadRequestError('Please provide amount');
   };
+
+  if (!(typeof amount === 'number')) {
+    throw new BadRequestError('Amount should be a number');
+  }
+
+  if (amount <= 0) {
+    throw new BadRequestError('Please provide a valid amount');
+  }
 
   req.body.initiator = req.user.userId;
   const recipient = await User.findOne({ email: req.body.recipient });
@@ -31,8 +35,13 @@ const allocateDppCoins = async (req: Request, res: Response) => {
   req.body.recipient = recipient.get('_id');
   req.body.coinType = 'dppCoins';
   req.body.transactionType = 'allocation';
-  const data = await Transaction.create({ ...req.body });
+  const transaction = await Transaction.create({ ...req.body });
+  const data = JSON.parse(JSON.stringify(transaction, null, 2));
 
+  delete data['updatedAt'];
+  delete data['__v'];
+
+  // TODO: update directly on server
   const recipientBalance = await Balance.findOne({ userId: req.body.recipient });
   if (recipientBalance) {
     recipientBalance.dppCoins = recipientBalance.dppCoins += amount;

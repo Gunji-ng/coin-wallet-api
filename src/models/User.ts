@@ -66,4 +66,12 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
+UserSchema.pre('findOneAndUpdate', async function () {
+  const data = this.getUpdate() as any;
+  const salt = await bcrypt.genSalt(10);
+  if (data.password) {
+    data.password = await bcrypt.hash(data.password, salt);
+  }
+});
+
 export default model<IUser, UserModel>('User', UserSchema);
