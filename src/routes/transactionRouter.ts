@@ -1,6 +1,10 @@
 import { Router } from "express";
 import { allocateDppCoins, allocateKdjCoins } from "../controllers/transactionController";
+import { coinTypes } from "../utils/coinTypes";
 
 const transactionRouter = Router();
 
-export default transactionRouter.post('/allocate/dpp', allocateDppCoins).post('/allocate/kdj', allocateKdjCoins);
+transactionRouter.post('/allocate/dpp', allocateDppCoins);
+transactionRouter.post('/allocate/kdj', allocateKdjCoins);
+
+export default transactionRouter;

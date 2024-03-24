@@ -7,7 +7,7 @@ interface IUser {
   name: string;
   email: string;
   password: string;
-  roles: number[];
+  roles: appRoles[];
 };
 
 interface IUserMethods {

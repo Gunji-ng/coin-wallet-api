@@ -11,7 +11,6 @@ const register = async (req: Request, res: Response) => {
   await Balance.create({ userId: data._id });
 
   delete data['password'];
-  delete data['roles'];
   delete data['_id'];
   delete data['updatedAt'];
   delete data['__v'];
@@ -47,7 +46,6 @@ const login = async (req: Request, res: Response) => {
   data['token'] = user.generateToken();
 
   delete data['password'];
-  delete data['roles'];
   delete data['_id'];
 
   res.status(StatusCodes.OK).json({
