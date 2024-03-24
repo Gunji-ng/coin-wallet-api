@@ -1,11 +1,13 @@
 import { Model, Schema, model, Types } from "mongoose";
+import { coinTypes } from "../utils/coinTypes";
+import { transactionTypes } from "../utils/transactionTypes";
 
 interface ITransaction {
   initiator: Types.ObjectId;
   recipient: Types.ObjectId;
   amount: number;
-  coinType: 'dppCoins' | 'kdjCoins';
-  transactionType: 'allocation' | 'transfer' | 'conversion' | 'redeem';
+  coinType: coinTypes;
+  transactionType: transactionTypes;
 };
 
 interface ITransactionMethods {
