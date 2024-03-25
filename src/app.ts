@@ -9,6 +9,7 @@ import authRouter from "./routes/authRouter";
 import balanceRouter from "./routes/balanceRouter";
 import transactionRouter from "./routes/transactionRouter";
 import profileRouter from "./routes/profileRouter";
+import roleRouter from "./routes/roleRouter";
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.use('/api/v1/profile', profileRouter);
 app.use('/api/v1/balance', balanceRouter);
 
 app.use('/api/v1/transactions', transactionRouter);
+
+app.use('/api/v1/roles', roleRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
