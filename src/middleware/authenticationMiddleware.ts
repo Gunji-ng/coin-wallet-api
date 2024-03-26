@@ -2,21 +2,35 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { UnauthenticatedError } from '../errors';
 
-export function authMiddleware(req: Request, res: Response, next: NextFunction) {
+export function authMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const { authorization } = req.headers;
   if (!authorization) {
     throw new UnauthenticatedError('No authorization header found');
-  };
+  }
   if (!authorization.startsWith('Bearer ')) {
-    throw new UnauthenticatedError('Authorization format should be [Bearer <token>]');
-  };
+    throw new UnauthenticatedError(
+      'Authorization format should be [Bearer <token>]',
+    );
+  }
 
   const token = authorization.split(' ')[1];
   try {
-    const decodedPayload = jwt.verify(token, process.env.APP_KEY as string) as jwt.JwtPayload;
-    req.user = { userId: decodedPayload.userId, email: decodedPayload.email, name: decodedPayload.name, roles: decodedPayload.roles };
+    const decodedPayload = jwt.verify(
+      token,
+      process.env.APP_KEY as string,
+    ) as jwt.JwtPayload;
+    req.user = {
+      userId: decodedPayload.userId,
+      email: decodedPayload.email,
+      name: decodedPayload.name,
+      roles: decodedPayload.roles,
+    };
   } catch (error) {
-    throw new UnauthenticatedError('Invalid authorization token')
+    throw new UnauthenticatedError('Invalid authorization token');
   }
   next();
-};
+}

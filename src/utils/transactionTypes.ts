@@ -1,6 +1,6 @@
 export enum transactionTypes {
-  ALLOCATION = 'allocation',
-  TRANSFER = 'transfer',
-  CONVERSION = 'conversion',
-  REDEEM = 'redeem'
-};
+  allocation = 'allocation',
+  transfer = 'transfer',
+  conversion = 'conversion',
+  redeem = 'redeem',
+}

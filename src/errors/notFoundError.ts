@@ -7,4 +7,4 @@ export default class NotFoundError extends CustomAPIError {
     super(message);
     this.statusCode = StatusCodes.NOT_FOUND;
   }
-};
+}

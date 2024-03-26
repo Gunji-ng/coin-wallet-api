@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, UnauthenticatedError } from "../errors";
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import { BadRequestError, UnauthenticatedError } from '../errors';
 import User from '../models/User';
-import Balance from "../models/Balance";
+import Balance from '../models/Balance';
 
 const register = async (req: Request, res: Response) => {
   const user = await User.create({ ...req.body });
@@ -17,7 +17,7 @@ const register = async (req: Request, res: Response) => {
 
   res.status(StatusCodes.CREATED).json({
     message: 'User created successfully',
-    data
+    data,
   });
 };
 
@@ -26,20 +26,27 @@ const login = async (req: Request, res: Response) => {
 
   if (!email) {
     throw new BadRequestError('Please provide email');
-  };
+  }
 
   if (!password) {
     throw new BadRequestError('Please provide password');
-  };
+  }
 
-  const user = await User.findOne({ email }).select(['+password', '-createdAt', '-updatedAt', '-__v']);
+  const user = await User.findOne({ email }).select([
+    '+password',
+    '-createdAt',
+    '-updatedAt',
+    '-__v',
+  ]);
   if (!user) {
     throw new UnauthenticatedError('Email not registered, kindly sign up');
   }
 
   const passwordMatch = await user.passwordMatch(password);
   if (!passwordMatch) {
-    throw new UnauthenticatedError('No account found for that combination of email and password');
+    throw new UnauthenticatedError(
+      'No account found for that combination of email and password',
+    );
   }
 
   const data = JSON.parse(JSON.stringify(user, null, 2));
@@ -50,7 +57,7 @@ const login = async (req: Request, res: Response) => {
 
   res.status(StatusCodes.OK).json({
     message: 'User login successful',
-    data
+    data,
   });
 };
 

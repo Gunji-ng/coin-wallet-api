@@ -1,14 +1,19 @@
-import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import User from "../models/User";
-import { BadRequestError, UnauthenticatedError } from "../errors";
+import { Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
+import User from '../models/User';
+import { BadRequestError, UnauthenticatedError } from '../errors';
 
 const getProfile = async (req: Request, res: Response) => {
-  const data = await User.findOne({ _id: req.user.userId }).select(['-_id', '-createdAt', '-updatedAt', '-__v']);
+  const data = await User.findOne({ _id: req.user.userId }).select([
+    '-_id',
+    '-createdAt',
+    '-updatedAt',
+    '-__v',
+  ]);
 
   res.status(StatusCodes.OK).json({
     message: 'Profile retrieved successfully',
-    data
+    data,
   });
 };
 
@@ -18,7 +23,9 @@ const changePassword = async (req: Request, res: Response) => {
     throw new BadRequestError('Both oldPassword and newPassword are required');
   }
 
-  const user = await User.findOne({ _id: req.user.userId }).select(['+password']);
+  const user = await User.findOne({ _id: req.user.userId }).select([
+    '+password',
+  ]);
   if (!user) {
     // Log: "user not found"
     throw new UnauthenticatedError('An error occurred');
@@ -33,12 +40,12 @@ const changePassword = async (req: Request, res: Response) => {
   const data = await User.findOneAndUpdate(
     { _id: req.user.userId },
     { password },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   ).select(['-_id', '-createdAt', '-updatedAt', '-__v']);
 
   res.status(StatusCodes.OK).json({
     message: 'Password updated successfully',
-    data
+    data,
   });
 };
 

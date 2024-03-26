@@ -1,15 +1,15 @@
-import "express-async-errors";
-import express, { Application } from "express";
+import 'express-async-errors';
+import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
-import connectToMongoDB from "./db/connectToMongoDB";
-import { notFoundMiddleware } from "./middleware/notFoundMiddleware";
-import { errorHandlerMiddleware } from "./middleware/errorHandlerMiddleware";
-import { authMiddleware } from "./middleware/authenticationMiddleware";
-import authRouter from "./routes/authRouter";
-import balanceRouter from "./routes/balanceRouter";
-import transactionRouter from "./routes/transactionRouter";
-import profileRouter from "./routes/profileRouter";
-import roleRouter from "./routes/roleRouter";
+import connectToMongoDB from './db/connectToMongoDB';
+import { notFoundMiddleware } from './middleware/notFoundMiddleware';
+import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware';
+import { authMiddleware } from './middleware/authenticationMiddleware';
+import authRouter from './routes/authRouter';
+import balanceRouter from './routes/balanceRouter';
+import transactionRouter from './routes/transactionRouter';
+import profileRouter from './routes/profileRouter';
+import roleRouter from './routes/roleRouter';
 
 dotenv.config();
 
@@ -42,7 +42,11 @@ const start = async () => {
   try {
     await connectToMongoDB(process.env.MONGODB_CONNECTION_STRING as string);
     app.listen(port, () =>
-      console.log('connected to mongoDB', '\n', `Server is listening on port ${port}...`)
+      console.log(
+        'connected to mongoDB',
+        '\n',
+        `Server is listening on port ${port}...`,
+      ),
     );
   } catch (error) {
     console.log(error);

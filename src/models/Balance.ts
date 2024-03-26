@@ -1,12 +1,12 @@
-import { Model, Schema, model, Types } from "mongoose";
+import { Model, Schema, model, Types } from 'mongoose';
 
-interface IBalance {
+type IBalance = {
   userId: Types.ObjectId;
   dppCoins: number;
   kdjCoins: number;
 };
 
-interface IBalanceMethods {
+type IBalanceMethods = {
   convertCoins(): void;
   addDppPoints(amount: number): void;
   subtractDppPoints(amount: number): void;
@@ -26,8 +26,8 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
         validator: (value: number): boolean => {
           return value > 0;
         },
-        message: 'Balance cannot be less than 0'
-      }
+        message: 'Balance cannot be less than 0',
+      },
     },
     kdjCoins: {
       type: Number,
@@ -37,16 +37,16 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
         validator: (value: number): boolean => {
           return value > 0;
         },
-        message: 'Balance cannot be less than 0'
-      }
+        message: 'Balance cannot be less than 0',
+      },
     },
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Please provide user']
-    }
+      required: [true, 'Please provide user'],
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 /**
@@ -56,23 +56,7 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
  * dppCoins can only be earned from DPP_Admin.
  */
 BalanceSchema.method('convertCoins', async function (amount: number) {
-  return
-})
-
-BalanceSchema.method('addDppPoints', async function (amount: number) {
-  return
-});
-
-BalanceSchema.method('subtractDppPoints', async function (amount: number) {
-  return
-});
-
-BalanceSchema.method('addKdjPoints', async function (amount: number) {
-  return
-});
-
-BalanceSchema.method('subtractKdjPoints', async function (amount: number) {
-  return
+  return;
 });
 
 export default model<IBalance, BalanceModel>('Balance', BalanceSchema);
