@@ -61,12 +61,13 @@ export default class TransactionService {
       const initiatorBalance = await Balance.findOne({
         userId: initiator,
       });
-      // initiatorBalance = JSON.parse(JSON.stringify(initiatorBalance, null, 2));
       const { [coinType]: coinBalance } = JSON.parse(
         JSON.stringify(initiatorBalance, null, 2),
       );
-      if (coinBalance < amount)
+      if (coinBalance < amount) {
         throw new BadRequestError('Insufficient balance');
+      }
+
       try {
         await Balance.updateOne(
           { userId: initiator },
