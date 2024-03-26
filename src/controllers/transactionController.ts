@@ -3,6 +3,7 @@ import { coinTypes } from '../utils/coinTypes';
 import TransactionService from '../services/transactionService';
 import { transactionTypes } from '../utils/transactionTypes';
 import { StatusCodes } from 'http-status-codes';
+import { BadRequestError } from '../errors';
 
 const allocateDppCoins = async (req: Request, res: Response) => {
   const { recipient, amount } = req.body;
@@ -41,6 +42,14 @@ const allocateKdjCoins = async (req: Request, res: Response) => {
 const transferCoins = async (req: Request, res: Response) => {
   const { recipient, amount } = req.body;
   const coin = req.body.coin as coinTypes;
+
+  if (coinTypes[coin] === coinTypes.dppCoins) {
+    throw new BadRequestError('Cannot transfer dppCoins');
+  }
+
+  if (recipient === req.user.email) {
+    throw new BadRequestError('Cannot make transfer to self');
+  }
 
   const response = await new TransactionService().transactCoins(
     req.user.userId,
