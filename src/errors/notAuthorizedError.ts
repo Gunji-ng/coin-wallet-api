@@ -7,4 +7,4 @@ export default class NotAuthorizedError extends CustomAPIError {
     super(message);
     this.statusCode = StatusCodes.FORBIDDEN;
   }
-};
+}

@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { getBalance } from "../controllers/balanceController";
+import { Router } from 'express';
+import { getBalance } from '../controllers/balanceController';
 
 const authRouter = Router();
 

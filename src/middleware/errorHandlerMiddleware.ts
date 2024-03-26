@@ -1,12 +1,17 @@
-import { NextFunction, Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
+import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
-export function errorHandlerMiddleware(err: any, req: Request, res: Response, next: NextFunction) {
+export function errorHandlerMiddleware(
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   // Log: err with req
   let customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     message: err.message || 'Something went wrong, try again later',
-  }
+  };
 
   if (err.name === 'ValidationError') {
     let errorMessages = [];
@@ -27,5 +32,7 @@ export function errorHandlerMiddleware(err: any, req: Request, res: Response, ne
     customError.message = 'email address registered already';
   }
 
-  return res.status(customError.statusCode).json({ message: customError.message })
-};
+  return res
+    .status(customError.statusCode)
+    .json({ message: customError.message });
+}

@@ -1,23 +1,32 @@
-import { Request, Response } from "express";
-import { StatusCodes } from "http-status-codes";
-import { BadRequestError, NotFoundError } from "../errors";
-import User from "../models/User";
-import Transaction from "../models/Transaction";
-import Balance from "../models/Balance";
-import { coinTypes } from "../utils/coinTypes";
-import { transactionTypes } from "../utils/transactionTypes";
+import { BadRequestError, NotFoundError } from '../errors';
+import User from '../models/User';
+import Transaction from '../models/Transaction';
+import Balance from '../models/Balance';
+import { coinTypes } from '../utils/coinTypes';
+import { transactionTypes } from '../utils/transactionTypes';
 
 export default class TransactionService {
-  async allocateCoins(req: Request, res: Response, coinType: coinTypes) {
-    const { amount } = req.body;
+  async transactCoins(
+    initiator: number,
+    recipientEmail: string,
+    amount: number,
+    coinType: coinTypes,
+    transactionType: transactionTypes,
+  ) {
+    if (
+      transactionType === transactionTypes.conversion ||
+      transactionType === transactionTypes.redeem
+    ) {
+      console.log(recipientEmail);
+    }
 
-    if (!req.body.recipient) {
-      throw new BadRequestError('Please provide recipient');
-    };
+    if (!recipientEmail) {
+      throw new BadRequestError('Please provide recipient (email)');
+    }
 
     if (!amount) {
       throw new BadRequestError('Please provide amount');
-    };
+    }
 
     if (!(typeof amount === 'number')) {
       throw new BadRequestError('Amount should be a number');
@@ -27,35 +36,64 @@ export default class TransactionService {
       throw new BadRequestError('Please provide a valid amount');
     }
 
-    req.body.initiator = req.user.userId;
-    const recipient = await User.findOne({ email: req.body.recipient });
+    if (!Object.values(coinTypes).includes(coinType)) {
+      throw new BadRequestError('Please provide a valid coin type');
+    }
+
+    if (!Object.values(transactionTypes).includes(transactionType)) {
+      throw new BadRequestError('Please provide a valid transaction type');
+    }
+
+    const recipient = await User.findOne({ email: recipientEmail });
     if (!recipient) {
       throw new NotFoundError('recipient not found');
     }
 
-    req.body.recipient = recipient.get('_id');
-    req.body.coinType = coinType;
-    req.body.transactionType = transactionTypes.ALLOCATION;
+    const transactionOptions = {
+      initiator,
+      recipient: recipient.get('_id'),
+      amount,
+      coinType,
+      transactionType,
+    };
+
+    if (transactionType === transactionTypes.transfer) {
+      const initiatorBalance = await Balance.findOne({
+        userId: initiator,
+      });
+      // initiatorBalance = JSON.parse(JSON.stringify(initiatorBalance, null, 2));
+      const { [coinType]: coinBalance } = JSON.parse(
+        JSON.stringify(initiatorBalance, null, 2),
+      );
+      if (coinBalance < amount)
+        throw new BadRequestError('Insufficient balance');
+      try {
+        await Balance.updateOne(
+          { userId: initiator },
+          { $inc: { [coinType]: -amount } },
+        );
+      } catch (error) {
+        // Log: error
+        console.log(error);
+      }
+    }
 
     try {
       await Balance.updateOne(
-        { userId: req.body.recipient },
-        { '$inc': { [coinType]: amount } }
+        { userId: transactionOptions.recipient },
+        { $inc: { [coinType]: amount } },
       );
     } catch (error) {
       // Log: error
       console.log(error);
     }
 
-    const transaction = await Transaction.create({ ...req.body });
+    const transaction = await Transaction.create({ ...transactionOptions });
     const data = JSON.parse(JSON.stringify(transaction, null, 2));
 
     delete data['updatedAt'];
     delete data['__v'];
 
-    res.status(StatusCodes.OK).json({
-      message: `${amount} ${coinType} allocated successfully`,
-      data
-    });
-  };
+    return data;
+  }
 }

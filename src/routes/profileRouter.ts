@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { changePassword, getProfile } from "../controllers/profileController";
+import { Router } from 'express';
+import { changePassword, getProfile } from '../controllers/profileController';
 
 const profileRouter = Router();
 
