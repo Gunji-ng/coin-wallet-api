@@ -1,19 +1,12 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { BadRequestError, UnauthenticatedError } from '../errors';
-import User from '../models/User';
-import Balance from '../models/Balance';
+import { BadRequestError } from '../errors';
+import AuthService from '../services/authService';
 
 const register = async (req: Request, res: Response) => {
-  const user = await User.create({ ...req.body });
-  const data = JSON.parse(JSON.stringify(user, null, 2));
-  data['token'] = user.generateToken();
-  await Balance.create({ userId: data._id });
+  const { email, name, password } = req.body;
 
-  delete data['password'];
-  delete data['_id'];
-  delete data['updatedAt'];
-  delete data['__v'];
+  const data = await new AuthService().registerUser(email, name, password);
 
   res.status(StatusCodes.CREATED).json({
     message: 'User created successfully',
@@ -32,28 +25,7 @@ const login = async (req: Request, res: Response) => {
     throw new BadRequestError('Please provide password');
   }
 
-  const user = await User.findOne({ email }).select([
-    '+password',
-    '-createdAt',
-    '-updatedAt',
-    '-__v',
-  ]);
-  if (!user) {
-    throw new UnauthenticatedError('Email not registered, kindly sign up');
-  }
-
-  const passwordMatch = await user.passwordMatch(password);
-  if (!passwordMatch) {
-    throw new UnauthenticatedError(
-      'No account found for that combination of email and password',
-    );
-  }
-
-  const data = JSON.parse(JSON.stringify(user, null, 2));
-  data['token'] = user.generateToken();
-
-  delete data['password'];
-  delete data['_id'];
+  const data = await new AuthService().loginUser(email, password);
 
   res.status(StatusCodes.OK).json({
     message: 'User login successful',

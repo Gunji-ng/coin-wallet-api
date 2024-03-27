@@ -13,13 +13,6 @@ export default class TransactionService {
     coinType: coinTypes,
     transactionType: transactionTypes,
   ) {
-    if (
-      transactionType === transactionTypes.conversion ||
-      transactionType === transactionTypes.redeem
-    ) {
-      console.log(recipientEmail);
-    }
-
     if (!recipientEmail) {
       throw new BadRequestError('Please provide recipient (email)');
     }

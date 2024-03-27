@@ -24,9 +24,9 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
       default: 0,
       validate: {
         validator: (value: number): boolean => {
-          return value > 0;
+          return value >= 0;
         },
-        message: 'Balance cannot be less than 0',
+        message: 'dppCoins Balance cannot be less than 0',
       },
     },
     kdjCoins: {
@@ -35,9 +35,9 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
       default: 0,
       validate: {
         validator: (value: number): boolean => {
-          return value > 0;
+          return value >= 0;
         },
-        message: 'Balance cannot be less than 0',
+        message: 'kdjCoins Balance cannot be less than 0',
       },
     },
     userId: {
