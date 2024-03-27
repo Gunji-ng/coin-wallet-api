@@ -1,15 +1,10 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import User from '../models/User';
-import { BadRequestError, UnauthenticatedError } from '../errors';
+import { BadRequestError } from '../errors';
+import ProfileService from '../services/profileService';
 
 const getProfile = async (req: Request, res: Response) => {
-  const data = await User.findOne({ _id: req.user.userId }).select([
-    '-_id',
-    '-createdAt',
-    '-updatedAt',
-    '-__v',
-  ]);
+  const data = await new ProfileService().getUserProfile(req.user.userId);
 
   res.status(StatusCodes.OK).json({
     message: 'Profile retrieved successfully',
@@ -23,25 +18,11 @@ const changePassword = async (req: Request, res: Response) => {
     throw new BadRequestError('Both oldPassword and newPassword are required');
   }
 
-  const user = await User.findOne({ _id: req.user.userId }).select([
-    '+password',
-  ]);
-  if (!user) {
-    // Log: "user not found"
-    throw new UnauthenticatedError('An error occurred');
-  }
-
-  const passwordMatch = await user.passwordMatch(oldPassword);
-  if (!passwordMatch) {
-    // Log: "password mismatch"
-    throw new UnauthenticatedError('An error occurred');
-  }
-
-  const data = await User.findOneAndUpdate(
-    { _id: req.user.userId },
-    { password },
-    { new: true, runValidators: true },
-  ).select(['-_id', '-createdAt', '-updatedAt', '-__v']);
+  const data = await new ProfileService().changeUserPassword(
+    req.user.userId,
+    oldPassword,
+    password,
+  );
 
   res.status(StatusCodes.OK).json({
     message: 'Password updated successfully',
