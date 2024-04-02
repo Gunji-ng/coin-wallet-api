@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { coinTypes } from '../utils/coinTypes';
+import { coinTypes } from '../types/coinTypes';
 import TransactionService from '../services/transactionService';
-import { transactionTypes } from '../utils/transactionTypes';
+import { transactionTypes } from '../types/transactionTypes';
 import { StatusCodes } from 'http-status-codes';
 import { BadRequestError } from '../errors';
 

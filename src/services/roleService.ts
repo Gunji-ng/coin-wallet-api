@@ -14,7 +14,7 @@ export default class RoleService {
       { $addToSet: { roles: appRoles[role] } },
       { new: true, runValidators: true },
     ).select(['-_id', '-createdAt', '-updatedAt', '-__v']);
-    // TODO: Log recipient out so new token can be generated
+    // TODO: Invalidate existing tokens
 
     return data;
   }

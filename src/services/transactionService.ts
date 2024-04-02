@@ -2,8 +2,8 @@ import { BadRequestError, NotFoundError } from '../errors';
 import User from '../models/User';
 import Transaction from '../models/Transaction';
 import Balance from '../models/Balance';
-import { coinTypes } from '../utils/coinTypes';
-import { transactionTypes } from '../utils/transactionTypes';
+import { coinTypes } from '../types/coinTypes';
+import { transactionTypes } from '../types/transactionTypes';
 
 export default class TransactionService {
   async transactCoins(

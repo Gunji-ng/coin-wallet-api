@@ -1,5 +1,23 @@
 import { Model, Schema, model, Types } from 'mongoose';
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    GetBalanceResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            dppCoins:
+ *              type: integer
+ *            kdjCoins:
+ *              type: integer
+ */
+
 type IBalance = {
   userId: Types.ObjectId;
   dppCoins: number;

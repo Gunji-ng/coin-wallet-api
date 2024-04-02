@@ -1,6 +1,62 @@
 import { Model, Schema, model, Types } from 'mongoose';
-import { coinTypes } from '../utils/coinTypes';
-import { transactionTypes } from '../utils/transactionTypes';
+import { coinTypes } from '../types/coinTypes';
+import { transactionTypes } from '../types/transactionTypes';
+
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    AllocateCoinsInput:
+ *      type: object
+ *      required:
+ *        - recipient
+ *        - amount
+ *      properties:
+ *        recipient:
+ *          type: string
+ *          default: user@example.com
+ *        amount:
+ *          type: integer
+ *          default: 1
+ *    TransferCoinsInput:
+ *      type: object
+ *      required:
+ *        - recipient
+ *        - amount
+ *        - coin
+ *      properties:
+ *        recipient:
+ *          type: integer
+ *          default: user@example.com
+ *        amount:
+ *          type: integer
+ *          default: 1
+ *        coin:
+ *          type: string
+ *          default: kdjCoins
+ *    TransactionResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            initiator:
+ *              type: string
+ *            recipient:
+ *              type: string
+ *            amount:
+ *              type: integer
+ *            coinType:
+ *              type: string
+ *            transactionType:
+ *              type: string
+ *            _id:
+ *              type: string
+ *            createdAt:
+ *              type: string
+ */
 
 type ITransaction = {
   initiator: Types.ObjectId;

@@ -32,6 +32,7 @@ export default class ProfileService {
       { password },
       { new: true, runValidators: true },
     ).select(['-_id', '-createdAt', '-updatedAt', '-__v']);
+    // TODO: Invalidate existing tokens
 
     return data;
   }
