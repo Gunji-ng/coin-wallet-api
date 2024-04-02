@@ -1,23 +1,5 @@
 import { Model, Schema, model, Types } from 'mongoose';
 
-/**
- * @openapi
- * components:
- *  schemas:
- *    GetBalanceResponse:
- *      type: object
- *      properties:
- *        message:
- *          type: string
- *        data:
- *          type: object
- *          properties:
- *            dppCoins:
- *              type: integer
- *            kdjCoins:
- *              type: integer
- */
-
 type IBalance = {
   userId: Types.ObjectId;
   dppCoins: number;
@@ -76,5 +58,23 @@ const BalanceSchema = new Schema<IBalance, BalanceModel, IBalanceMethods>(
 BalanceSchema.method('convertCoins', async function (amount: number) {
   return;
 });
+
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    GetBalanceResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            dppCoins:
+ *              type: integer
+ *            kdjCoins:
+ *              type: integer
+ */
 
 export default model<IBalance, BalanceModel>('Balance', BalanceSchema);
