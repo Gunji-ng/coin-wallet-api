@@ -1,5 +1,5 @@
 import 'express-async-errors';
-import express, { Application } from 'express';
+import express from 'express';
 import * as dotenv from 'dotenv';
 import connectToMongoDB from './db/connectToMongoDB';
 import { notFoundMiddleware } from './middleware/notFoundMiddleware';
@@ -10,17 +10,20 @@ import balanceRouter from './routes/balanceRouter';
 import transactionRouter from './routes/transactionRouter';
 import profileRouter from './routes/profileRouter';
 import roleRouter from './routes/roleRouter';
+import serveSwaggerDocs from './utils/swagger';
 
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 
 const port: number = Number(process.env.PORT) || 3000;
+
+serveSwaggerDocs(app);
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Href link to swagger document');
+  res.send('<h1><a href="/docs">Swagger docs</a></h1>');
 });
 
 app.use('/api/v1', authRouter);
@@ -41,13 +44,13 @@ app.use(errorHandlerMiddleware);
 const start = async () => {
   try {
     await connectToMongoDB(process.env.MONGODB_CONNECTION_STRING as string);
-    app.listen(port, () =>
+    app.listen(port, () => {
       console.log(
         'connected to mongoDB',
         '\n',
         `Server is listening on port ${port}...`,
-      ),
-    );
+      );
+    });
   } catch (error) {
     console.log(error);
   }

@@ -3,6 +3,118 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { appRoles } from '../utils/appRoles';
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - name
+ *        - email
+ *        - password
+ *      properties:
+ *        name:
+ *          type: string
+ *          default: Test User
+ *        email:
+ *          type: string
+ *          default: user@example.com
+ *        password:
+ *          type: string
+ *          default: secret12#
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            roles:
+ *              type: array
+ *              items:
+ *                type: integer
+ *            createdAt:
+ *              type: string
+ *            token:
+ *              type: string
+ *    LoginUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: user@example.com
+ *        password:
+ *          type: string
+ *          default: secret12#
+ *    LoginUserResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            roles:
+ *              type: array
+ *              items:
+ *                type: integer
+ *            token:
+ *              type: string
+ *    GetProfileResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: object
+ *          properties:
+ *            name:
+ *              type: string
+ *            email:
+ *              type: string
+ *            roles:
+ *              type: array
+ *              items:
+ *                type: integer
+ *    ChangeUserPasswordInput:
+ *      type: object
+ *      required:
+ *        - oldPassword
+ *        - newPassword
+ *      properties:
+ *        oldPassword:
+ *          type: string
+ *          default: secret12#
+ *        newPassword:
+ *          type: string
+ *          default: secret34#
+ *    AssignRoleInput:
+ *      type: object
+ *      required:
+ *        - user
+ *        - role
+ *      properties:
+ *        user:
+ *          type: string
+ *          default: user@example.com
+ *        role:
+ *          type: string
+ *          default: Admin
+ */
+
 type IUser = {
   name: string;
   email: string;
