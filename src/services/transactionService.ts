@@ -50,36 +50,15 @@ export default class TransactionService {
       transactionType,
     };
 
-    if (transactionType === transactionTypes.transfer) {
-      const initiatorBalance = await Balance.findOne({
-        userId: initiator,
-      });
-      const { [coinType]: coinBalance } = JSON.parse(
-        JSON.stringify(initiatorBalance, null, 2),
-      );
-      if (coinBalance < amount) {
-        throw new BadRequestError('Insufficient balance');
-      }
-
-      try {
-        await Balance.updateOne(
-          { userId: initiator },
-          { $inc: { [coinType]: -amount } },
-        );
-      } catch (error) {
-        // Log: error
-        console.log(error);
-      }
+    if (
+      transactionType === transactionTypes.transfer ||
+      transactionType === transactionTypes.redeem
+    ) {
+      await this.deductFromBalance(initiator, coinType, amount);
     }
 
-    try {
-      await Balance.updateOne(
-        { userId: transactionOptions.recipient },
-        { $inc: { [coinType]: amount } },
-      );
-    } catch (error) {
-      // Log: error
-      console.log(error);
+    if (transactionType !== transactionTypes.redeem) {
+      await this.addToBalance(transactionOptions.recipient, coinType, amount);
     }
 
     const transaction = await Transaction.create({ ...transactionOptions });
@@ -89,5 +68,35 @@ export default class TransactionService {
     delete data['__v'];
 
     return data;
+  }
+
+  async addToBalance(userId: number, coinType: coinTypes, amount: number) {
+    try {
+      await Balance.updateOne({ userId }, { $inc: { [coinType]: amount } });
+    } catch (error) {
+      // Log: error
+      console.log(error);
+    }
+  }
+
+  async deductFromBalance(userId: number, coinType: coinTypes, amount: number) {
+    try {
+      // Check if balance is sufficient to be deducted from
+      const balance = await Balance.findOne({
+        userId,
+      });
+      const { [coinType]: coinBalance } = JSON.parse(
+        JSON.stringify(balance, null, 2),
+      );
+      if (coinBalance < amount) {
+        throw new BadRequestError('Insufficient balance');
+      }
+
+      // Deduct from balance
+      await Balance.updateOne({ userId }, { $inc: { [coinType]: -amount } });
+    } catch (error) {
+      //Log: error
+      console.log(error);
+    }
   }
 }
