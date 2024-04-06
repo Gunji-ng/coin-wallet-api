@@ -65,4 +65,22 @@ const transferCoins = async (req: Request, res: Response) => {
   });
 };
 
-export { allocateDppCoins, allocateKdjCoins, transferCoins };
+const redeemCoins = async (req: Request, res: Response) => {
+  const { amount } = req.body;
+  const coin = req.body.coin as coinTypes;
+
+  const response = await new TransactionService().transactCoins(
+    req.user.userId,
+    req.user.email,
+    amount,
+    coinTypes[coin],
+    transactionTypes.redeem,
+  );
+
+  res.status(StatusCodes.OK).json({
+    message: 'Transaction successful',
+    data: response,
+  });
+};
+
+export { allocateDppCoins, allocateKdjCoins, transferCoins, redeemCoins };

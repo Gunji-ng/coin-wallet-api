@@ -80,6 +80,18 @@ const TransactionSchema = new Schema<
  *        coin:
  *          type: string
  *          default: kdjCoins
+ *    RedeemCoinsInput:
+ *      type: object
+ *      required:
+ *        - amount
+ *        - coin
+ *      properties:
+ *        amount:
+ *          type: integer
+ *          default: 1
+ *        coin:
+ *          type: string
+ *          default: kdjCoins
  *    TransactionResponse:
  *      type: object
  *      properties:
