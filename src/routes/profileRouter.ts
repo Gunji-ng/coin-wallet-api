@@ -36,7 +36,7 @@ profileRouter.get('/', getProfile);
  *          schema:
  *            $ref: '#/components/schemas/ChangeUserPasswordInput'
  *    responses:
- *      201:
+ *      200:
  *        description: Password updated successfully
  *        content:
  *          application/json:

@@ -79,6 +79,7 @@ const TransactionSchema = new Schema<
  *          default: 1
  *        coin:
  *          type: string
+ *          enum: [dppCoins, kdjCoins]
  *          default: kdjCoins
  *    RedeemCoinsInput:
  *      type: object
@@ -91,6 +92,7 @@ const TransactionSchema = new Schema<
  *          default: 1
  *        coin:
  *          type: string
+ *          enum: [dppCoins, kdjCoins]
  *          default: kdjCoins
  *    TransactionResponse:
  *      type: object
