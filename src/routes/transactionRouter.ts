@@ -24,7 +24,7 @@ const transactionRouter = Router();
  *          schema:
  *            $ref: '#/components/schemas/AllocateCoinsInput'
  *    responses:
- *      201:
+ *      200:
  *        description: Transaction successful
  *        content:
  *          application/json:
@@ -55,7 +55,7 @@ transactionRouter.post(
  *          schema:
  *            $ref: '#/components/schemas/AllocateCoinsInput'
  *    responses:
- *      201:
+ *      200:
  *        description: Transaction successful
  *        content:
  *          application/json:
@@ -86,7 +86,7 @@ transactionRouter.post(
  *          schema:
  *            $ref: '#/components/schemas/TransferCoinsInput'
  *    responses:
- *      201:
+ *      200:
  *        description: Transaction successful
  *        content:
  *          application/json:
@@ -113,7 +113,7 @@ transactionRouter.post('/transfer', transferCoins);
  *          schema:
  *            $ref: '#/components/schemas/RedeemCoinsInput'
  *    responses:
- *      201:
+ *      200:
  *        description: Transaction successful
  *        content:
  *          application/json:

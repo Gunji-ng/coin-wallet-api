@@ -19,4 +19,19 @@ async function assignRole(req: Request, res: Response) {
   });
 }
 
-export { assignRole };
+async function unassignRole(req: Request, res: Response) {
+  const { user, role } = req.body;
+  if (!user) throw new BadRequestError('Please provide user (email)');
+  if (!role) throw new BadRequestError('Please provide role');
+  if (!Object.keys(appRoles).includes(role))
+    throw new BadRequestError('Please provide a valid role');
+
+  const data = await new RoleService().unassignRole(user, role);
+
+  res.status(StatusCodes.OK).json({
+    message: `${user} unassigned ${role} role successfully`,
+    data,
+  });
+}
+
+export { assignRole, unassignRole };

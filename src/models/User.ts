@@ -174,7 +174,7 @@ UserSchema.pre('findOneAndUpdate', async function () {
  *        newPassword:
  *          type: string
  *          default: secret34#
- *    AssignRoleInput:
+ *    UpdateRoleInput:
  *      type: object
  *      required:
  *        - user
@@ -185,6 +185,7 @@ UserSchema.pre('findOneAndUpdate', async function () {
  *          default: user@example.com
  *        role:
  *          type: string
+ *          enum: [Admin, DPP_Admin , KDJ_Admin, User]
  *          default: Admin
  */
 
