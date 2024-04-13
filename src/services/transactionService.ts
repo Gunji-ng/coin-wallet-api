@@ -50,6 +50,7 @@ export default class TransactionService {
       transactionType,
     };
 
+    // TODO: implement adding and deducting from balance as DB transaction
     if (
       transactionType === transactionTypes.transfer ||
       transactionType === transactionTypes.redeem
@@ -62,6 +63,14 @@ export default class TransactionService {
     }
 
     const transaction = await Transaction.create({ ...transactionOptions });
+    await transaction.populate({
+      path: 'initiator',
+      select: 'email name -_id',
+    });
+    await transaction.populate({
+      path: 'recipient',
+      select: 'email name -_id',
+    });
     const data = JSON.parse(JSON.stringify(transaction, null, 2));
 
     delete data['updatedAt'];
@@ -103,7 +112,10 @@ export default class TransactionService {
   async getUserTransactions(userId: number) {
     const data = await Transaction.find({
       $or: [{ initiator: userId }, { recipient: userId }],
-    }).select(['-updatedAt', '-__v']);
+    })
+      .populate({ path: 'initiator', select: 'email name -_id' })
+      .populate({ path: 'recipient', select: 'email name -_id' })
+      .select(['-updatedAt', '-__v']);
 
     return data;
   }
@@ -120,7 +132,10 @@ export default class TransactionService {
           recipient: userId,
         },
       ],
-    }).select(['-updatedAt', '-__v']);
+    })
+      .populate({ path: 'initiator', select: 'email name -_id' })
+      .populate({ path: 'recipient', select: 'email name -_id' })
+      .select(['-updatedAt', '-__v']);
 
     return data;
   }

@@ -101,9 +101,19 @@ const TransactionSchema = new Schema<
  *          type: object
  *          properties:
  *            initiator:
- *              type: string
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                email:
+ *                  type: string
  *            recipient:
- *              type: string
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                email:
+ *                  type: string
  *            amount:
  *              type: integer
  *            coinType:
@@ -125,9 +135,19 @@ const TransactionSchema = new Schema<
  *            type: object
  *            properties:
  *              initiator:
- *                type: string
+ *                type: object
+ *                properties:
+ *                  name:
+ *                    type: string
+ *                  email:
+ *                    type: string
  *              recipient:
- *                type: string
+ *                type: object
+ *                properties:
+ *                  name:
+ *                    type: string
+ *                  email:
+ *                    type: string
  *              amount:
  *                type: integer
  *              coinType:

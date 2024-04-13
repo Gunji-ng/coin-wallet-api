@@ -19,6 +19,7 @@ const transactionRouter = Router();
  *    tags:
  *      - Transactions
  *    summary: Allocate dppCoins to User
+ *    description: Only accessible by DPP admins
  *    requestBody:
  *      required: true
  *      content:
@@ -50,6 +51,7 @@ transactionRouter.post(
  *    tags:
  *      - Transactions
  *    summary: Allocate kdjCoins to User
+ *    description: Only accessible by KDJ admins
  *    requestBody:
  *      required: true
  *      content:
