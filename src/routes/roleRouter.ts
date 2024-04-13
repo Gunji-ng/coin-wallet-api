@@ -12,6 +12,7 @@ const roleRouter = Router();
  *    tags:
  *      - Roles
  *    summary: Assign role to user
+ *    description: Only accessible by Admins
  *    requestBody:
  *      required: true
  *      content:
@@ -39,6 +40,7 @@ roleRouter.patch('/assign', verifyRolesMiddleware(appRoles.Admin), assignRole);
  *    tags:
  *      - Roles
  *    summary: Unassign role from user
+ *    description: Only accessible by Admins
  *    requestBody:
  *      required: true
  *      content:

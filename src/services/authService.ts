@@ -4,6 +4,7 @@ import User from '../models/User';
 
 export default class AuthService {
   async registerUser(email: string, name: string, password: string) {
+    // TODO: implement user and balance creation as DB transaction
     const user = await User.create({ email, name, password });
     const data = JSON.parse(JSON.stringify(user, null, 2));
     data['token'] = user.generateToken();
