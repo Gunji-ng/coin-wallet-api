@@ -1,6 +1,9 @@
 import 'express-async-errors';
 import express from 'express';
 import * as dotenv from 'dotenv';
+import { rateLimit } from 'express-rate-limit';
+import helmet from 'helmet';
+import cors from 'cors';
 import connectToMongoDB from './db/connectToMongoDB';
 import { notFoundMiddleware } from './middleware/notFoundMiddleware';
 import { errorHandlerMiddleware } from './middleware/errorHandlerMiddleware';
@@ -20,7 +23,17 @@ const port: number = Number(process.env.PORT) || 3000;
 
 serveSwaggerDocs(app);
 
+app.set('trust proxy', 1);
 app.use(express.json());
+
+app.use(
+  rateLimit({
+    windowMs: 10 * 60 * 1000,
+    max: 100,
+  }),
+);
+app.use(helmet());
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send('<h1><a href="/docs">Swagger docs</a></h1>');
