@@ -83,4 +83,41 @@ const redeemCoins = async (req: Request, res: Response) => {
   });
 };
 
-export { allocateDppCoins, allocateKdjCoins, transferCoins, redeemCoins };
+const getUserTransactions = async (req: Request, res: Response) => {
+  const response = await new TransactionService().getUserTransactions(
+    req.user.userId,
+  );
+
+  res.status(StatusCodes.OK).json({
+    message: 'Transactions retrieved successfully',
+    data: response,
+  });
+};
+
+const getTransaction = async (req: Request, res: Response) => {
+  const response = await new TransactionService().getSingleTransaction(
+    req.params.transactionId,
+    req.user.userId,
+  );
+
+  if (response === null) {
+    return res.status(StatusCodes.NOT_FOUND).json({
+      status: false,
+      message: 'Transaction not found',
+    });
+  }
+
+  res.status(StatusCodes.OK).json({
+    message: 'Transaction retrieved successfully',
+    data: response,
+  });
+};
+
+export {
+  allocateDppCoins,
+  allocateKdjCoins,
+  transferCoins,
+  redeemCoins,
+  getTransaction,
+  getUserTransactions,
+};

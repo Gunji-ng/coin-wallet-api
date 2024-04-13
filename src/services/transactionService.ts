@@ -99,4 +99,29 @@ export default class TransactionService {
       console.log(error);
     }
   }
+
+  async getUserTransactions(userId: number) {
+    const data = await Transaction.find({
+      $or: [{ initiator: userId }, { recipient: userId }],
+    }).select(['-updatedAt', '-__v']);
+
+    return data;
+  }
+
+  async getSingleTransaction(transactionId: string, userId: number) {
+    const data = await Transaction.findOne({
+      $or: [
+        {
+          _id: transactionId,
+          initiator: userId,
+        },
+        {
+          _id: transactionId,
+          recipient: userId,
+        },
+      ],
+    }).select(['-updatedAt', '-__v']);
+
+    return data;
+  }
 }
