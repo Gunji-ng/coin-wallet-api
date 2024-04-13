@@ -2,6 +2,8 @@ import { Router } from 'express';
 import {
   allocateDppCoins,
   allocateKdjCoins,
+  getTransaction,
+  getUserTransactions,
   redeemCoins,
   transferCoins,
 } from '../controllers/transactionController';
@@ -125,5 +127,50 @@ transactionRouter.post('/transfer', transferCoins);
  *        description: Something went wrong, try again later
  */
 transactionRouter.post('/redeem', redeemCoins);
+
+/**
+ * @openapi
+ * /api/v1/transactions:
+ *  get:
+ *    tags:
+ *      - Transactions
+ *    summary: Get user's transactions
+ *    responses:
+ *      200:
+ *        description: Transactions retrieved successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/UserTransactionsResponse'
+ *      500:
+ *        description: Something went wrong, try again later
+ */
+transactionRouter.get('/', getUserTransactions);
+
+/**
+ * @openapi
+ * /api/v1/transactions/{transactionId}:
+ *  get:
+ *    tags:
+ *      - Transactions
+ *    summary: Get single transaction
+ *    parameters:
+ *     - name: transactionId
+ *       in: path
+ *       description: The id of the transaction
+ *       required: true
+ *    responses:
+ *      200:
+ *        description: Transaction retrieved successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/TransactionResponse'
+ *      404:
+ *        description: Transaction not found
+ *      500:
+ *        description: Something went wrong, try again later
+ */
+transactionRouter.get('/:transactionId', getTransaction);
 
 export default transactionRouter;

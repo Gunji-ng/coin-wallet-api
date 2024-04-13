@@ -10,9 +10,7 @@ type ITransaction = {
   transactionType: transactionTypes;
 };
 
-type ITransactionMethods = {
-  transact(): void;
-};
+type ITransactionMethods = {};
 
 type TransactionModel = Model<ITransaction, {}, ITransactionMethods>;
 
@@ -116,6 +114,30 @@ const TransactionSchema = new Schema<
  *              type: string
  *            createdAt:
  *              type: string
+ *    UserTransactionsResponse:
+ *      type: object
+ *      properties:
+ *        message:
+ *          type: string
+ *        data:
+ *          type: array
+ *          items:
+ *            type: object
+ *            properties:
+ *              initiator:
+ *                type: string
+ *              recipient:
+ *                type: string
+ *              amount:
+ *                type: integer
+ *              coinType:
+ *                type: string
+ *              transactionType:
+ *                type: string
+ *              _id:
+ *                type: string
+ *              createdAt:
+ *                type: string
  */
 
 export default model<ITransaction, TransactionModel>(

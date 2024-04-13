@@ -8,10 +8,18 @@ export function errorHandlerMiddleware(
   next: NextFunction,
 ) {
   // Log: err with req
-  let customError = {
+
+  const customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
     message: err.message || 'Something went wrong, try again later',
   };
+
+  if (err.name === 'CastError' && err.message.includes('Transaction')) {
+    return res.status(StatusCodes.NOT_FOUND).json({
+      status: false,
+      message: 'Transaction not found',
+    });
+  }
 
   if (err.name === 'ValidationError') {
     let errorMessages = [];
